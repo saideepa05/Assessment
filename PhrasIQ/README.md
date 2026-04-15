@@ -51,6 +51,8 @@ It provides maximum transparency. During a demo, it proves exactly *why* the AI 
 ## App Screenshots
 
 ### Standard RAG — Part 1
+<img width="1440" height="1110" alt="image" src="https://github.com/user-attachments/assets/8816fedc-d74d-42ef-a2ec-fc7349e2adfb" />
+
 <img width="1112" height="561" alt="Screenshot 2026-04-14 214814" src="https://github.com/user-attachments/assets/4480ea06-e734-48e9-86aa-a445cc18a1f5" />
 
 > The **Standard RAG (Part 1)** mode runs a single-pass retrieval chain. The user's question is embedded, the top-K most relevant documents are retrieved from FAISS, and the LLM generates a direct answer grounded in those sources. The right panel shows the cited source documents used to construct the response.
@@ -58,6 +60,8 @@ It provides maximum transparency. During a demo, it proves exactly *why* the AI 
 ---
 
 ### Mitigated RAG — Part 2 (Auditor Pattern)
+<img width="1440" height="1482" alt="image" src="https://github.com/user-attachments/assets/c5891625-f82a-4e7f-bc7f-24a3fa64bddd" />
+
 <img width="1114" height="554" alt="Screenshot 2026-04-14 214930" src="https://github.com/user-attachments/assets/1ba8b64e-577d-4336-aed9-c497ea9d054f" />
 
 > The **Mitigated RAG (Part 2)** mode adds a two-step verification pipeline. A **Generator** LLM produces a draft answer, then a **Lead Auditor** LLM reviews it against the original retrieved context for hallucinations or unsupported claims. The output includes a **Final Polished Answer** (clean result) and a **Verification Report** (verdict + supporting checks), providing full transparency for auditable, high-stakes financial queries.
