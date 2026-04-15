@@ -23,19 +23,14 @@ This repository contains a Retrieval-Augmented Generation (RAG) pipeline designe
 
 ## Part 2: Hallucination Mitigation Analysis
 
-### 1. Failure Mode Analysis
-In Part 2, we identified two primary failure modes for queries probing non-existent entities (like "CEO guidance"):
-- **Entity Swap (The 'CEO' Mirage)**: Because the corpus mentions a **CFO** and a **VP Sales**, an aggressive LLM might "autocorrect" the user's query and attribute the CFO's statements to the CEO.
-- **Commitment Confabulation**: The specific phrasing of the query (*"what remediation steps did she commit to?"*) introduces a **presupposition**. If the system is not strictly grounded, it may feel "forced" to find an answer, interpreting routine timing reversals (like the FSI renewal) as active remediation commitments pledged by a female leader.
-
-### 2. Mitigation Strategy: The Auditor Pattern (Internal Verification)
+### 1. Mitigation Strategy: The Auditor Pattern (Internal Verification)
 I implemented a **Multi-Step Verification (Self-Correction)** chain:
 1. **Generator (Draft)**: Produces an initial answer based on context.
 2. **Auditor (Lead)**: A second AI pass that explicitly audits the draft against the source context to produce a **Comprehensive Audited Response**. This output contains:
     - **### Final Polished Answer**: The clean, corrected result.
     - **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
 
-### 3. Tradeoffs
+### 2. Tradeoffs
 - **What it catches**: It provides maximum transparency. During a demo, it proves exactly *why* the AI decided to trust or reject a piece of information, while still providing a clean answer at the top.
 - **What it misses**: This approach shows the "internal reasoning" to the user, which is a powerful pedagogical and demo tool, even if it might be condensed for a consumer-facing app.
 
@@ -51,11 +46,3 @@ I implemented a **Multi-Step Verification (Self-Correction)** chain:
    ```
    *The app includes a sidebar toggle to switch between the Standard and Mitigated architectures live.*
 
-**Query:** "Which business unit had the largest unfavorable variance in Q3, and what factors does the commentary attribute this to?"
-
-**Answer:** 
-The business unit with the largest unfavorable variance in Q3 2024 was the Enterprise Solutions unit... The commentary attributes this primarily to a large renewal in the financial services vertical slipping into Q4 and a decline in professional services revenue...
-
-**Cited Sources:**
-- Document 1
-- bu_financials_q3.csv
