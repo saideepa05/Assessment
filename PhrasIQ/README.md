@@ -11,11 +11,14 @@ This repository contains a Retrieval-Augmented Generation (RAG) pipeline designe
 ### 2. Model
 - **OpenAI `gpt-5-mini`**: The system exclusively uses OpenAI's `gpt-5-mini` for high-reasoning performance and reliability.
 
-### 3. Retrieval Method
+### 3. Embeddings
+- **OpenAI `text-embedding-ada-002`**: All documents (both structured CSV rows and unstructured commentary) are embedded using OpenAI via `OpenAIEmbeddings()` from LangChain. This model produces 1536-dimensional vectors that capture the semantic meaning of each document chunk, enabling accurate similarity-based retrieval even across heterogeneous data formats (financial metrics vs. narrative text).
+
+### 4. Retrieval Method
 - We utilize **FAISS** (Facebook AI Similarity Search) as our vector database. It is highly efficient for local development and provides fast similarity searching via Euclidean distance (default) or Inner Product.
 - **Top-K Retrieval**: The system retrieves the top 5 most relevant documents to provide a comprehensive context for the LLM.
 
-### 4. Grounding & Fallback
+### 5. Grounding & Fallback
 - **LCEL Chain**: The pipeline is built using LangChain Expression Language (LCEL). It uses a `RunnableParallel` structure to return both the **answer** and the **retrieved context documents**.
 - **Source Citation**: The metadata from the retrieved documents is extracted and displayed to the user, identifying whether the answer came from the metric table or a specific commentary document.
 - **Fallback Logic**: The system prompt explicitly instructs the LLM: *"If the answer is not contained within the context, clearly state that you do not have enough information to answer."*
