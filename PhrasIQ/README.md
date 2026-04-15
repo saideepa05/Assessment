@@ -23,14 +23,19 @@ This repository contains a Retrieval-Augmented Generation (RAG) pipeline designe
 
 ## Part 2: Hallucination Mitigation Analysis
 
-### 1. Mitigation Strategy: The Auditor Pattern (Internal Verification)
+### 1. Failure Mode Analysis
+In Part 2, we identified two primary failure modes for queries probing non-existent entities (like "CEO guidance"):
+- **Entity Swap (The 'CEO' Mirage)**: Because the corpus mentions a **CFO** and a **VP Sales**, an aggressive LLM might "autocorrect" the user's query and attribute the CFO's statements to the CEO.
+- **Commitment Confabulation**: The specific phrasing of the query (*"what remediation steps did she commit to?"*) introduces a **presupposition**. If the system is not strictly grounded, it may feel "forced" to find an answer, interpreting routine timing reversals (like the FSI renewal) as active remediation commitments pledged by a female leader.
+
+### 2. Mitigation Strategy: The Auditor Pattern (Internal Verification)
 I implemented a **Multi-Step Verification (Self-Correction)** chain:
 1. **Generator (Draft)**: Produces an initial answer based on context.
 2. **Auditor (Lead)**: A second AI pass that explicitly audits the draft against the source context to produce a **Comprehensive Audited Response**. This output contains:
-   - **### Final Polished Answer**: The clean, corrected result.
-   - **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
+    - **### Final Polished Answer**: The clean, corrected result.
+    - **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
 
-### 2. Tradeoffs
+### 3. Tradeoffs
 - **What it catches**: It provides maximum transparency. During a demo, it proves exactly *why* the AI decided to trust or reject a piece of information, while still providing a clean answer at the top.
 - **What it misses**: This approach shows the "internal reasoning" to the user, which is a powerful pedagogical and demo tool, even if it might be condensed for a consumer-facing app.
 
@@ -46,3 +51,14 @@ I implemented a **Multi-Step Verification (Self-Correction)** chain:
    ```
    *The app includes a sidebar toggle to switch between the Standard and Mitigated architectures live.*
 
+## App Screenshots
+
+### Standard RAG — Part 1
+![Standard RAG Mode](screenshot_standard_rag.png)
+> The **Standard RAG (Part 1)** mode runs a single-pass retrieval chain. The user's question is embedded, the top-K most relevant documents are retrieved from FAISS, and the LLM generates a direct answer grounded in those sources. The right panel shows the cited source documents used to construct the response.
+
+---
+
+### Mitigated RAG — Part 2 (Auditor Pattern)
+![Mitigated RAG Mode](screenshot_mitigated_rag.png)
+> The **Mitigated RAG (Part 2)** mode adds a two-step verification pipeline. A **Generator** LLM produces a draft answer, then a **Lead Auditor** LLM reviews it against the original retrieved context for hallucinations or unsupported claims. The output includes a **Final Polished Answer** (clean result) and a **Verification Report** (verdict + supporting checks), providing full transparency for auditable, high-stakes financial queries.
