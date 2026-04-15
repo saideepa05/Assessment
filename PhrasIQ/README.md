@@ -27,8 +27,8 @@ This repository contains a Retrieval-Augmented Generation (RAG) pipeline designe
 I implemented a **Multi-Step Verification (Self-Correction)** chain:
 1. **Generator (Draft)**: Produces an initial answer based on context.
 2. **Auditor (Lead)**: A second AI pass that explicitly audits the draft against the source context to produce a **Comprehensive Audited Response**. This output contains:
-    - **### Final Polished Answer**: The clean, corrected result.
-    - **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
+   **### Final Polished Answer**: The clean, corrected result.
+   **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
 
 ### 2. Tradeoffs
 - **What it catches**: It provides maximum transparency. During a demo, it proves exactly *why* the AI decided to trust or reject a piece of information, while still providing a clean answer at the top.
