@@ -23,16 +23,15 @@ This repository contains a Retrieval-Augmented Generation (RAG) pipeline designe
 ## Part 2: Hallucination Mitigation Analysis
 
 
-### 2. Mitigation Strategy: The Auditor Pattern (Internal Verification)
+### 1. Mitigation Strategy: The Auditor Pattern (Internal Verification)
 I implemented a **Multi-Step Verification (Self-Correction)** chain:
 1. **Generator (Draft)**: Produces an initial answer based on context.
 2. **Auditor (Lead)**: A second AI pass that explicitly audits the draft against the source context to produce a **Comprehensive Audited Response**. This output contains:
     - **### Final Polished Answer**: The clean, corrected result.
     - **### Verification Report**: A detailed breakdown of the verdict (Accurate/Hallucination) and the specific supporting checks performed.
 
-### 3. Tradeoffs
-- **What it catches**: It provides maximum transparency. During a demo, it proves exactly *why* the AI decided to trust or reject a piece of information, while still providing a clean answer at the top.
-- **What it misses**: This approach shows the "internal reasoning" to the user, which is a powerful pedagogical and demo tool, even if it might be condensed for a consumer-facing app.
+### 2. What it shows
+It provides maximum transparency. During a demo, it proves exactly *why* the AI decided to trust or reject a piece of information, while still providing a clean answer at the top. This approach shows the "internal reasoning" to the user, which is a powerful demo tool, even if it might be condensed for a consumer-facing app.
 
 ## Usage
 
@@ -49,11 +48,11 @@ I implemented a **Multi-Step Verification (Self-Correction)** chain:
 ## App Screenshots
 
 ### Standard RAG — Part 1
-![Standard RAG Mode](screenshot_standard_rag.png)
+<img width="1112" height="561" alt="Screenshot 2026-04-14 214814" src="https://github.com/user-attachments/assets/4480ea06-e734-48e9-86aa-a445cc18a1f5" />
 > The **Standard RAG (Part 1)** mode runs a single-pass retrieval chain. The user's question is embedded, the top-K most relevant documents are retrieved from FAISS, and the LLM generates a direct answer grounded in those sources. The right panel shows the cited source documents used to construct the response.
 
 ---
 
 ### Mitigated RAG — Part 2 (Auditor Pattern)
-![Mitigated RAG Mode](screenshot_mitigated_rag.png)
+<img width="1114" height="554" alt="Screenshot 2026-04-14 214930" src="https://github.com/user-attachments/assets/1ba8b64e-577d-4336-aed9-c497ea9d054f" />
 > The **Mitigated RAG (Part 2)** mode adds a two-step verification pipeline. A **Generator** LLM produces a draft answer, then a **Lead Auditor** LLM reviews it against the original retrieved context for hallucinations or unsupported claims. The output includes a **Final Polished Answer** (clean result) and a **Verification Report** (verdict + supporting checks), providing full transparency for auditable, high-stakes financial queries.
